@@ -132,6 +132,30 @@ def logaas():
 				sql1="select * from login where (email_id='{}' or user_name='{}') and password='{}' ".format(email,email,password)
 				return sql1
 
+@app.route('/update_password')
+def update_password():
+	return render_template('update_passowrds.html')
+
+@app.route('/opt_page' ,methods=['GET', 'POST'])
+def opt_page():
+	try:
+		if request.method == 'POST' and 'email' in request.form:
+			email = request.form['email']
+			sql1="select email_id from login where (email_id='{}' or user_name='{}')  ".format(email,email)
+			db_cursor.execute(sql1)
+			data=db_cursor.fetchall()
+			if data:
+				# return data
+				number = random.randint(1111, 9999)
+				msg = Message( sender='jayaramireddy063@gmail.com', recipients=[data])
+				msg.body = f" hello vishnu how are this is you code : {number}"  # Concatenate message body and random number
+				mail.send(msg)
+				return render_template('otp_pages.html',number1=number)
+	except Exception as e:
+		return str(e)
+	
+
+	
 if __name__ =='__main__':
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'

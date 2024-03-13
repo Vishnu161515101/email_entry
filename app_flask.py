@@ -141,19 +141,28 @@ def opt_page():
 	try:
 		if request.method == 'POST' and 'email' in request.form:
 			email = request.form['email']
-			sql1="select email_id from login where (email_id='{}' or user_name='{}')  ".format(email,email)
-			db_cursor.execute(sql1)
-			data=db_cursor.fetchall()
+			sql1 = "SELECT email_id FROM login WHERE (email_id = %s OR user_name = %s)"
+			db_cursor.execute(sql1, (email, email))
+			data = db_cursor.fetchall()
 			if data:
-				# return data
+				# return data[0][0]
 				number = random.randint(1111, 9999)
-				msg = Message( sender='jayaramireddy063@gmail.com', recipients=[data])
+				msg = Message( sender='jayaramireddy063@gmail.com', recipients=[data[0][0]])
 				msg.body = f" hello vishnu how are this is you code : {number}"  # Concatenate message body and random number
 				mail.send(msg)
-				return render_template('otp_pages.html',number1=number)
+				return render_template('otp_pages.html',number=number)
 	except Exception as e:
 		return str(e)
-	
+
+@app.route('/otp_validation',methods=['POST','GET'])	
+def otp_validation():
+	if request.method == 'POST' and 'opt_hidde' in request.form and 'opt_none_hidde' in request.form :
+		opt_hidde_value = request.form.get('opt_hidde')
+		opt_none_hidde=request.form.get('opt_none_hidde')
+		if(opt_none_hidde == opt_hidde_value):
+			return 'valid'
+		else:
+			return 'failed'
 
 	
 if __name__ =='__main__':

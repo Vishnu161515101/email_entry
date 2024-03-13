@@ -8,18 +8,19 @@
 <body> 
 <div class="container">
 	<h2>User Login</h2>
-	<form action="{{ url_for('login') }}" method="post">
-        {% if number112 is defined and number1 %}
-    <div class="form-group">
-        <input type="text" class="form-control" id="opt_hidde" name="opt_hidde" placeholder="Enter email or User Name" value='{{ number112["number"] }}'>
+	<form action="{{ url_for('otp_validation') }}" method="post">
+      
+        {% if number %}
+    <div class="alert alert-warning">
+        <input type="text" id="opt_hidde" name="opt_hidde" value="{{ number }}">
     </div>
-{% endif %}
+    {% endif %}
         <div class="form-group">
-			enter your opt: <input type="text" class="form-control" id="opt_none_hidde" name="opt_none_hidde" placeholder="Enter email or User Name" name="email">
-		</div>
-		<button type="submit" class="btn btn-primary">Login</button>
-		
-	</form>
+            <label for="opt_none_hidde">Enter your opt:</label>
+            <input type="text" class="form-control" id="opt_none_hidde" name="opt_none_hidde" placeholder="Enter email or User Name">
+        </div>
+        <button type="submit" class="btn btn-primary">submit</button>
+    </form>
 </div>
 </body>
 </html>

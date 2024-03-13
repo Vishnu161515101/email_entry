@@ -8,7 +8,7 @@
 <body> 
 <div class="container">
 	<h2>User Login</h2>
-	<form action="{{ url_for('login') }}" method="post">
+	<form action="{{ url_for('logaas') }}" method="post">
 		{% if message is defined and message %}
 			<div class="alert alert-warning"> <strong> {{ message }} ????</strong></div>
 		{% endif %}
@@ -20,7 +20,7 @@
 		Password: <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" name="password">
 		</div> 
 		<button type="submit" class="btn btn-primary">Login</button>
-		<p class="bottom">Don't have an account? <a class="bottom" href="{{url_for('index')}}"> Register here</a></p>
+		
 	</form>
 </div>
 </body>

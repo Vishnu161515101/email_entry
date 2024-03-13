@@ -38,7 +38,7 @@ def index():
 			userName = request.form['name']
 			password = request.form['password']
 			email = request.form['email']
-			sql1="select * from login where email_id='{}' and password='{}'".format(email,password)
+			sql1="select * from login where email_id='{}' and password='{}' ".format(email,password)
 			db_cursor.execute(sql1)
 			data=db_cursor.fetchall()
 			if data:
@@ -51,16 +51,18 @@ def index():
 				message = 'Please fill out the form !'
 				# return 'helo'
 			else:
-				sql="insert into login(name,password,email_id)values('{}','{}','{}')".format(userName,password,email)
-				db_cursor.execute(sql)
-				db_mysql.commit()
 				number = random.randint(1111, 9999)
 				names1212="Hi"+userName 
 				msg = Message(subject=names1212, sender='jayaramireddy063@gmail.com', recipients=[email])
-				msg.html = "Hello " + userName + "<br>" + \
+				msg.html = "Hello " +"   "+    userName + "<br>" + \
                         "Thank you for registering!" + "<br>" + \
                         "Your username: " + userName +str(number)+"<br>" \
                         "Your password: " + password + "<br>"
+				user_names=userName +str(number)
+				sql="insert into login(name,password,email_id,user_name)values('{}','{}','{}','{}')".format(userName,password,email,user_names)
+				db_cursor.execute(sql)
+				db_mysql.commit()
+				
 
 				# msg.body = "Hello " + userName + "<br><br>"
 				# msg.body += "Thank you for registering!" + "<br><br>"
@@ -83,7 +85,7 @@ def login():
 		if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
 				email = request.form['email']
 				password = request.form['password']
-				sql1="select * from login where email_id='{}' and password='{}'".format(email,password)
+				sql1="select * from login where (email_id='{}' or user_name='{}') and password='{}' ".format(email,email,password)
 				db_cursor.execute(sql1)
 				data=db_cursor.fetchall()
 				if data:
@@ -114,6 +116,21 @@ def email_send():
     except Exception as e:
         return str(e)
 	
+
+@app.route('/test')
+def test():
+	return render_template('test_login.html')
+
+
+
+@app.route('/logaas' ,methods=['GET', 'POST'])
+def logaas():
+		message = ''
+		if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+				email = request.form['email']
+				password = request.form['password']
+				sql1="select * from login where (email_id='{}' or user_name='{}') and password='{}' ".format(email,email,password)
+				return sql1
 
 if __name__ =='__main__':
     app.secret_key = 'super secret key'
